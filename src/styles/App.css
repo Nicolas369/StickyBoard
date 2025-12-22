@@ -1,0 +1,21 @@
+.app-root {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  height: 75px;
+  width: 100%;
+  background: #ffeb3b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-title {
+  font-size: 35px;
+  color: #000;
+  margin: 10px;
+}

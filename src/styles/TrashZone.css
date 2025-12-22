@@ -1,0 +1,22 @@
+.trash-zone {
+  position: fixed;
+  bottom: 10px;
+  right: 15px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  user-select: none;
+}
+
+.trash-zone-icon {
+  font-size: 50px;
+  text-shadow: 3px 5px 7px #555;
+}
+
+.trash-zone-label {
+  font-weight: bold;
+  font-size: 12px;
+  color: #000;
+}
