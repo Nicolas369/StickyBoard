@@ -20,7 +20,7 @@ export const useStickyNoteAPI = () => {
         return new Promise(resolve => {
             setTimeout(() => {
                 localStorage.setItem('sticky-notes', JSON.stringify(notes));
-                resolve({ notes, message: 'Notes Store Successfully' });
+                resolve({ notes, message: 'Notes Store Successfully.' });
             }, 1500);
         });
     }
@@ -32,7 +32,7 @@ export const useStickyNoteAPI = () => {
                 const notes = storedNotes ? JSON.parse(storedNotes) : initialState;
                 const newNotes = notes.filter((note: StickyNoteData) => note.id !== id);
                 localStorage.setItem('sticky-notes', JSON.stringify(newNotes));
-                resolve({ notes: newNotes, message: 'Note Delete Success Fully' });
+                resolve({ notes: newNotes, message: 'Note Deleted Successfully.' });
             }, 1500);
         });
     }
