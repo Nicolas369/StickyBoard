@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import StickyNote from "./StickyNote";
 import TrashZone from "./TrashZone";
 import AddStickyNote from "./AddStickyNote";
@@ -8,23 +8,18 @@ import type { CreateNotePayload, StickyNoteData, UpdateNoteChanges } from "../de
 const NotesBoard = () => {
   const [notes, setNotes] = useState<StickyNoteData[]>([]);
 
-  const trashRef = useRef<HTMLDivElement | null>(null);
+  const { getNotes, isLoading, saveNotes, deleteNote: deleteNoteAPI } = useStickyNoteAPI();
 
-  const { getNotes, isLoading, saveNotes } = useStickyNoteAPI();
+  const trashRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     getNotes().then((notesFromAPI: StickyNoteData[]) => {
       setNotes(notesFromAPI);
     });
-  }, [getNotes]);
+  }, [getNotes, setNotes]);
 
-  const handleSaveNotes = (newNotes: StickyNoteData[]): void => {
-    saveNotes(newNotes);
-  };
-
-  const addNote = (data: CreateNotePayload): void => {
+  const addNote = useCallback((data: CreateNotePayload): void => {
     setNotes((prev) => {
-      console.log(data);
       const newNotes: StickyNoteData[] = [
         {
           id: Date.now(),
@@ -33,12 +28,12 @@ const NotesBoard = () => {
         ...prev,
       ];
 
-      handleSaveNotes(newNotes);
+      saveNotes(newNotes);
       return newNotes;
     });
-  };
+  }, []);
 
-  const updateNote = (
+  const updateNote = useCallback((
     id: number,
     changes: UpdateNoteChanges
   ): void => {
@@ -62,18 +57,18 @@ const NotesBoard = () => {
       const [lastUpdated] = updatedNotes.splice(index, 1);
       const newNotes = [lastUpdated, ...updatedNotes];
 
-      handleSaveNotes(newNotes);
+      saveNotes(newNotes);
       return newNotes;
     });
-  };
+  }, []);
 
-  const deleteNote = (id: number): void => {
+  const deleteNote = useCallback((id: number): void => {
     setNotes((prev) => {
       const newNotes = prev.filter((note) => note.id !== id);
-      handleSaveNotes(newNotes);
+      deleteNoteAPI(id).then((res) => setNotes(res.notes));
       return newNotes;
     });
-  };
+  }, []);
 
   return (
     <main 
@@ -98,7 +93,7 @@ const NotesBoard = () => {
       ))}
 
       {/* Loading indicator when fetching from API. */}
-      {isLoading && <h1 style={{color: '#666'}}>Loading...</h1>}
+      {isLoading && <h1 style={{color: '#666', marginLeft: 10}}>Loading...</h1>}
 
       {/* Add Note flying Button. */}
       <AddStickyNote onCreate={addNote} />

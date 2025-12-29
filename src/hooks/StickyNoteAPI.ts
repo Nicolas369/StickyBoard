@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import type { StickyNoteData } from "../definitions/definitions";
+import type { APIResponse, StickyNoteData } from "../definitions/definitions";
 
 export const useStickyNoteAPI = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +16,7 @@ export const useStickyNoteAPI = () => {
         });
     }
 
-    const sendNotesToAPI = (notes: StickyNoteData[]) => { // Moke POST Method.
+    const sendNotesToAPI = (notes: StickyNoteData[]): Promise<APIResponse> => { // Moke POST Method.
         return new Promise(resolve => {
             setTimeout(() => {
                 localStorage.setItem('sticky-notes', JSON.stringify(notes));
@@ -25,15 +25,28 @@ export const useStickyNoteAPI = () => {
         });
     }
 
+    const sendIdToAPiToDelete = (id: number): Promise<APIResponse> => { // Moke DELETE Method.
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const storedNotes = localStorage.getItem('sticky-notes');
+                const notes = storedNotes ? JSON.parse(storedNotes) : initialState;
+                const newNotes = notes.filter((note: StickyNoteData) => note.id !== id);
+                localStorage.setItem('sticky-notes', JSON.stringify(newNotes));
+                resolve({ notes: newNotes, message: 'Note Delete Success Fully' });
+            }, 1500);
+        });
+    }
+
     const getNotes = useCallback(fetchNotesFromAPI, []);
-    const saveNotes= useCallback(sendNotesToAPI, []);
+    const saveNotes = useCallback(sendNotesToAPI, []);
+    const deleteNote = useCallback(sendIdToAPiToDelete, []);
 
     return {
         isLoading,
         getNotes,
-        saveNotes
+        saveNotes,
+        deleteNote
     }
-
 }
 
 const initialState = [
@@ -70,4 +83,4 @@ const initialState = [
             y: 24
         }
     }
-]
+];

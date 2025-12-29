@@ -18,11 +18,11 @@ const AddStickyNote = ({ onCreate }: AddStickyNoteProps) => {
     };
 
     const positions: Record<string, { x: number; y: number }> = {
-      "Top Left": { x: 10, y: 10 },
-      "Top Right": { x: window.innerWidth - 250, y: 10 },
+      "Top Left": { x: 100, y: 10 },
+      "Top Right": { x: window.innerWidth - 300, y: 10 },
       "Bottom Left": { x: 100, y: window.innerHeight - 350 },
       "Bottom Right": {
-        x: window.innerWidth - 350,
+        x: window.innerWidth - 300,
         y: window.innerHeight - 350,
       },
     };
@@ -100,7 +100,7 @@ const AddStickyNote = ({ onCreate }: AddStickyNoteProps) => {
                   (position) => (
                     <button
                       key={position}
-                      className="add-note-option"
+                      className={`add-position-option ${notePosition === position ? 'btn-active' : ''}`}
                       onClick={(e) =>
                         handlePositionSelection(e, position)
                       }
@@ -115,7 +115,7 @@ const AddStickyNote = ({ onCreate }: AddStickyNoteProps) => {
                 {["small", "medium", "large"].map((size) => (
                   <button
                     key={size}
-                    className="add-note-option"
+                    className={`add-size-option ${noteSize === size ? 'btn-active' : ''}`}
                     onClick={(e) => handleSizeSelection(e, size)}
                   >
                     {size}

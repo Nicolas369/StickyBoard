@@ -80,3 +80,10 @@ export interface CreateStickyNotePayload {
 export interface AddStickyNoteProps {
   onCreate: (data: CreateStickyNotePayload) => void;
 }
+
+/* API definitions ---------------------------------------- */
+
+export type APIResponse = {
+  notes: StickyNoteData[];
+  message: string;
+}

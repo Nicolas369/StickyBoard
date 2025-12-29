@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, memo } from "react";
 import type { PointerEvent } from "react";
 import type {
   ActionState,
@@ -167,4 +167,4 @@ const StickyNote = ({
   );
 };
 
-export default StickyNote;
+export default memo(StickyNote);
